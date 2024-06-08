@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  
+  <title>Dashboard</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+  
+  <!-- Favicons -->
+  <link href="" rel="icon">
+  <link href="{% static 'user/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Raleway:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+  
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'user/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'user/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'user/vendor/aos/aos.css' %}" rel="stylesheet">
+  <link href="{% static 'user/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+  <link href="{% static 'user/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+  
+  <!-- Template Main CSS File -->
+  <link href="{% static 'user/css/main.css' %}" rel="stylesheet">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+  
+  
+</head>
+
+<body>
+  
+  <!-- ======= Header ======= -->
+  
+  
+  <header id="header" class="header d-flex align-items-center">
+    
+    <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+      <a href="{% url 'user_dashboard' %}" class="logo d-flex align-items-center">
+        <h1>Smart Parking<span>.</span></h1>
+      </a>
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a href="{% url 'user_dashboard' %}">Dashboard</a></li>
+          <li><a href="{% url 'book_slot' %}">Book Slot</a></li>
+          <li><a href="{% url 'bookings' %}"  class="active">My Bookings</a></li>
+          <li><a href="{% url 'booking_history' %}">Booking History</a></li>
+          <li><a href="{% url 'user-profile' %}">My Profile</a></li>
+          <a href="{% url 'user_logout' %}" ><button class="btn btn-sm rounded-3 btn-primary fw-bold m-5">Sign Out</button></a>
+        </ul>
+      </nav><!-- .navbar -->
+      
+      <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+      <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+      
+    </div>
+  </header><!-- End Header -->
+  <!-- End Header -->
+  
+  <!-- ======= Hero Section ======= -->
+  <section id="hero" class="">
+    
+    <main id="main">
+      
+      
+      <main id="main mt-5 pt-5">
+        
+        <section id="services" class="services sections-bg mt-0 pt-0" data-aos="fade-up">
+          <div class="section-header">
+            <h2>My Bookings</h2>
+            <p class="mb-0">The following section displays your paking history from previous dates to the present day</p>
+          </div>
+          
+          <table class="table align-middle ml-5 border border-success bg-white p-5 mb-5 overflow-auto">
+            <thead class="bg-light">
+              <tr>
+                <th class="text-center">Sno.</th>
+                <th>Vechile Number</th>
+                <th>Date</th>
+                <th>Vechile Type</th>
+                <th>Location</th>
+                <!-- <th>Payment</th> -->
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for bookings_slot in bookings %}
+              <tr>
+                <td class="text-center">
+                  {{bookings_slot.booking_id}}
+                </td>
+                <td>
+                  {{bookings_slot.user.vehicle_number}}
+                </td>
+                <td>
+                  <div class="d-flex">
+                    <div class="">
+                      {{bookings_slot.parking_date}}
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <p class="ms-3 fw-bold">{{bookings_slot.user.vehicle_type}}</p>
+                </td>
+                <td>
+                  <span class="">{{bookings_slot.slot.location}}<br> Hyderabad</span>
+                </td>
+                
+                <td>
+                  
+                  <a href="{% url 'check_out' bookings_slot.booking_id %}">
+                    <button
+                      type="button"
+                      class="btn btn-primary btn-rounded btn-sm"
+                      data-mdb-ripple-color="dark"
+                      >
+                      Check Out
+                    </button>
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </section>
+      </main>
+    </main>
+  </section>
+
+
+
+
+
+<!-- End #main -->
+
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
+  
+  <div class="container">
+    <div class="row gy-4">
+      <div class="col-lg-5 col-md-12 footer-info">
+        <a href="{% url 'user_dashboard' %}" class="logo d-flex align-items-center">
+          <span>Codebook</span>
+        </a>
+        <p>We have provided trainings in many engineering colleges across india. All trainings conducted are as a freelancer from third-party vendors.</p>
+      </div>
+      
+      <div class="col-lg-2 col-6 footer-links">
+        <h4>Useful Links</h4>
+        <ul>
+          <li><a href="{% url 'user_dashboard' %}">Dashboard</a></li>
+          <li><a href="{% url 'book_slot' %}">Book Slot</a></li>
+          <li><a href="{% url 'bookings' %}">My Bookings</a></li>
+          <li><a href="{% url 'user-profile' %}">My Profile</a></li>
+        </ul>
+      </div>
+      
+      <div class="col-lg-2 col-6 footer-links">
+        <h4>Our Services</h4>
+        <ul>
+          <li><a href="#">Web Design</a></li>
+          <li><a href="#">Web Development</a></li>
+          <li><a href="#">Product Management</a></li>
+          <li><a href="#">Marketing</a></li>
+          <li><a href="#">Graphic Design</a></li>
+        </ul>
+      </div>
+      
+      <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
+        <h4>Contact Us</h4>
+        <p>
+          Siris Rd, Near L.B Nagar Metro Station, Snehapuri Colony, <br>
+          Hyderabad<br>
+          Telangana<br>
+          <strong>Phone:</strong> ex. +91 XXXX-XXXXX<br>
+          <strong>Email:</strong> info@example.com<br>
+        </p>
+        
+      </div>
+      
+    </div>
+  </div>
+  
+  <div class="container mt-4">
+    <div class="copyright">
+      &copy; Copyright <strong><span>Codebook</span></strong>. All Rights Reserved
+    </div>
+    <div class="credits">
+      Designed by <a href="https://codebook.in/" target="_blank">Codebook</a>
+    </div>
+  </div>
+  
+</footer>
+<!-- End Footer -->
+
+<a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+<div id="preloader"></div>
+{% if messages %}              
+  {% for message in messages %}
+  {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+          <script>swal({
+              title: "Warning!",
+              text: "{{message}}",
+              icon: "warning",
+              button: "OK",
+          });
+          </script>
+          
+      {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+          <script>swal({
+              title: "Info :)",
+              text: "{{message}}",
+              icon: "info",
+              button: "OK",
+          });
+  </script>
+  {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+  <script>swal({
+  title: "Error :)",
+  text: "{{message}}",
+  icon: "error",
+  button: "OK",
+  });
+  </script>
+  {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+  <script>swal({
+  title: "Success :)",
+  text: "{{message}}",
+  icon: "success",
+  button: "OK",
+  });
+  </script>
+      {% endif %}              
+      {% endfor %} 
+      {% endif %}
+
+<!-- Vendor JS Files -->
+<script src="{% static 'user/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'user/vendor/aos/aos.js' %}"></script>
+<script src="{% static 'user/vendor/glightbox/js/glightbox.min.js' %}"></script>
+<script src="{% static 'user/vendor/purecounter/purecounter_vanilla.js' %}"></script>
+<script src="{% static 'user/vendor/swiper/swiper-bundle.min.js' %}"></script>
+<script src="{% static 'user/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+<script src="{% static 'user/vendor/php-email-form/validate.js' %}"></script>
+
+<!-- Template Main JS File -->
+<script src="{% static 'user/js/main.js' %}"></script>
+
+</body>
+
+</html>

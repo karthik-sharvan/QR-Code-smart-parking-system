@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Dashboard</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="" rel="icon">
+  <link href="{% static 'user/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Raleway:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'user/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'user/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'user/vendor/aos/aos.css' %}" rel="stylesheet">
+  <link href="{% static 'user/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+  <link href="{% static 'user/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'user/css/main.css' %}" rel="stylesheet">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+  
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  
+
+  <header id="header" class="header d-flex align-items-center">
+
+    <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+      <a href="user-dashboard.html" class="logo d-flex align-items-center">
+        <!-- Uncomment the line below if you also wish to use an image logo -->
+        <!-- <img src="{% static 'user/img/logo.png" alt=""> -->
+        <h1>Smart Parking<span>.</span></h1>
+      </a>
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a href="{% url 'user_dashboard' %}">Dashboard</a></li>
+          <li><a href="{% url 'book_slot' %}">Book Slot</a></li>
+          <li><a href="{% url 'bookings' %}">My Bookings</a></li>
+          <li><a href="{% url 'booking_history' %}">Booking History</a></li>
+          <li><a href="{% url 'user-profile' %}"  class="active">My Profile</a></li>
+          <a href="{% url 'user_logout' %}" ><button class="btn btn-sm rounded-3 btn-primary fw-bold m-5">Sign Out</button></a>
+        </ul>
+      </nav><!-- .navbar -->
+
+      <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+      <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+
+    </div>
+  </header>
+
+  <section class="h-100 gradient-custom-2" data-aos="fade-up">
+    <div class="section-header m-0 p-0">
+        <h2>Your Profile :</h2>
+      </div>
+    <div class="container mb-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col col-lg-12 col-xl-8">
+          <div class="card">
+            <div class="rounded-top text-white d-flex flex-row" style="background-color: #008374; height:200px;">
+              <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
+                <img src="/media/{{user.profile}}"
+                  alt="Generic placeholder image" class="img-fluid img-thumbnail  mb-1"
+                  style="width: 150px;height: 150px; z-index: 1">
+              </div>
+              <div class="ms-3" style="margin-top: 130px;">
+                <h5>{{user.full_name}}</h5>
+                <p><span class="">Vehicle Number :</span>{{user.vehicle_number}}</p>
+              </div>
+            </div>
+            <form action="{% url 'user-profile' %}" method="post" class="form-box mainForm px-5 border border-success mt-1" style="margin-top:0px" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-row row mb-2">
+                  <div class="col-md-6">
+                    <label >Name :</label> 
+                    <input type="text" id="name" name="name" value="{{user.full_name}}" class="form-control" >
+                  </div>
+                    <div class="col-md-6">
+                      <label >Email :</label> 
+                      <input type="email" id="email" name="email" value="{{user.email}}" class="form-control" >
+                    </div>
+                </div>
+                <div class="form-row row mb-2">
+                  <div class="col-md-6">
+                    <label >Phone :</label>
+                    <input type="tel" id="password" name="number" value="{{user.phone}}" class="form-control">
+                  </div>
+                    <div class="col-md-6">
+                        <label >City :</label> 
+                        <input type="text" id="city" name="city" value= "{{user.city}}" class="form-control" >
+                    </div>
+                </div>
+                <div class="form-row row">
+                    <div class="col-md-6">
+                        <label for="chooseCategory" class="m-1">Vehicle Type :</label>
+                        <select name="vehicle" class="form-select form-control"  id="vehicle">
+                            <option class="text-muted small" selected>{{user.vehicle_type}}</option>
+                            <option value="car">Car</option>
+                            <option value="Bike">Bike</option>
+                            <option value="truck">Truck</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                      <label >Vehicle Number :</label> 
+                      <input type="text" id="vehicle_number" name="vehicle_number" value="{{user.vehicle_number}}" class="form-control" >
+                  </div>
+                </div> 
+                <div class="form-row row">
+                  <div class="col-md-6">
+                    <label >License Number :</label> 
+                    <input type="text" id="licence_number" name="licence_number" value="{{user.license_number}}" class="form-control" >
+                  </div>
+                  <div class="col-md-6">
+                  <label >Change Profile :</label> 
+                  <input type="file" id="profile" accept="image/*" name="profile"  class="form-control">
+                  </div>
+                </div>                  
+                <div class="text-center">
+                  <button type="submit" class="btn btn-outline-success my-4 col-md-6" data-mdb-ripple-color="dark"
+                    style="z-index: 1;">
+                    Update Profile
+                  </button>
+                </div>                                   
+            </form> 
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+
+    <div class="container">
+      <div class="row gy-4">
+        <div class="col-lg-5 col-md-12 footer-info">
+          <a href="/user/user-dashboard.html" class="logo d-flex align-items-center">
+            <span>Codebook</span>
+          </a>
+          <p>We have provided trainings in many engineering colleges across india. All trainings conducted are as a freelancer from third-party vendors.</p>
+        </div>
+
+        <div class="col-lg-2 col-6 footer-links">
+          <h4>Useful Links</h4>
+          <ul>
+            <li><a href="/user/user-dashboard.html">Dashboard</a></li>
+            <li><a href="/user/user-bookslot.html">Book Slot</a></li>
+            <li><a href="/user/user-mybookings.html">My Bookings</a></li>
+            <li><a href="/user/user-myprofile.html">My Profile</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-2 col-6 footer-links">
+          <h4>Our Services</h4>
+          <ul>
+            <li><a href="#">Web Design</a></li>
+            <li><a href="#">Web Development</a></li>
+            <li><a href="#">Product Management</a></li>
+            <li><a href="#">Marketing</a></li>
+            <li><a href="#">Graphic Design</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
+          <h4>Contact Us</h4>
+          <p>
+            Siris Rd, Near L.B Nagar Metro Station, Snehapuri Colony, <br>
+            Hyderabad<br>
+            Telangana<br>
+            <strong>Phone:</strong> ex. +91 XXXX-XXXXX<br>
+            <strong>Email:</strong> info@example.com<br>
+          </p>
+
+        </div>
+
+      </div>
+    </div>
+
+    <div class="container mt-4">
+      <div class="copyright">
+        &copy; Copyright <strong><span>Codebook</span></strong>. All Rights Reserved
+      </div>
+      <div class="credits">
+        Designed by <a href="https://codebook.in/" target="_blank">Codebook</a>
+      </div>
+    </div>
+
+  </footer>
+  <!-- End Footer -->
+
+  <a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <div id="preloader"></div>
+  {% if messages %}              
+  {% for message in messages %}
+  {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+          <script>swal({
+              title: "Warning!",
+              text: "{{message}}",
+              icon: "warning",
+              button: "OK",
+          });
+          </script>
+          
+      {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+          <script>swal({
+              title: "Info :)",
+              text: "{{message}}",
+              icon: "info",
+              button: "OK",
+          });
+  </script>
+  {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+  <script>swal({
+  title: "Error :)",
+  text: "{{message}}",
+  icon: "error",
+  button: "OK",
+  });
+  </script>
+  {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+  <script>swal({
+  title: "Success :)",
+  text: "{{message}}",
+  icon: "success",
+  button: "OK",
+  });
+  </script>
+      {% endif %}              
+      {% endfor %} 
+      {% endif %}
+  <!-- Vendor JS Files -->
+  <script src="{% static 'user/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'user/vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'user/vendor/glightbox/js/glightbox.min.js' %}"></script>
+  <script src="{% static 'user/vendor/purecounter/purecounter_vanilla.js' %}"></script>
+  <script src="{% static 'user/vendor/swiper/swiper-bundle.min.js' %}"></script>
+  <script src="{% static 'user/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+  <script src="{% static 'user/vendor/php-email-form/validate.js' %}"></script>
+
+  <!-- Template Main JS File -->
+  <script src="{% static 'user/js/main.js' %}"></script>
+
+</body>
+
+</html>

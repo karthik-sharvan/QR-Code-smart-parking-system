@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    
+    <title>Confirm Booking </title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    
+    <!-- Favicons -->
+    <link href="" rel="icon">
+    <link href="{% static 'user/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Raleway:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+    
+    <!-- Vendor CSS Files -->
+    <link href="{% static 'user/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'user/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+    <link href="{% static 'user/vendor/aos/aos.css' %}" rel="stylesheet">
+    <link href="{% static 'user/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+    <link href="{% static 'user/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+    
+    <!-- Template Main CSS File -->
+    <link href="{% static 'user/css/main.css' %}" rel="stylesheet">
+    
+ 
+    
+    
+</head>
+
+<body>
+    
+    <!-- ======= Header ======= -->
+    
+    
+    <header id="header" class="header d-flex align-items-center">
+        
+        <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+            <a href="user-dashboard.html" class="logo d-flex align-items-center">
+                
+                <h1>Smart Parking<span>.</span></h1>
+            </a>
+            <nav id="navbar" class="navbar">
+                <ul>
+                    <li><a href="{% url 'user_dashboard' %}">Dashboard</a></li>
+                    <li><a href="{% url 'book_slot' %}"  >Book Slot</a></li>
+                    <li><a href="{% url 'bookings' %}">My Bookings</a></li>
+                    <li><a href="{% url 'booking_history' %}" class="active">Booking History</a></li>
+                    <li><a href="{% url 'user-profile' %}">My Profile</a></li>
+                    <a href="{% url 'user_logout' %}" ><button class="btn btn-sm rounded-3 btn-primary fw-bold m-5">Sign Out</button></a>
+                </ul>
+            </nav><!-- .navbar -->
+            
+            <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+            <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+            
+        </div>
+    </header><!-- End Header -->
+    <!-- End Header -->
+    
+        
+ <main id="main">
+    <section id="services" class="services sections-bg mt-0 pt-0">
+        <div class="container-fluid " data-aos="fade-up" >
+            <div ng-app="app">
+                <div ng-controller="UploadController as vm">
+                    <div class="container-fluid">
+                        <div class="page-header">
+                            <h3 class="text-center mt-3 pt-3"></h3>
+                        </div>
+                
+                      
+                       
+                        <!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css">
+                        <script type="text/javascript" src="https://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script> -->
+                        <div class="container-fluid">
+                        <div class="row header" style="text-align:center;color:antiquewhite">
+                        <h3>Booking History</h3>
+                        </div>
+                        <table id="example" class="table table-striped table-bordered" style="width:100%">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th>Location</th>
+                                        <th>Contact Number</th>
+                                        <th>Area Pin Number</th>
+                                        <th>Parking Date </th>
+                                        <th> In Time</th>
+                                        <th> Out Time</th>
+                                        <th> Total Parking Time</th>
+                                        <th> Parking Amount</th>
+                                        <th> Status</th>
+                                        <th> Feedback</th>
+
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for slot in booking_history %}
+                                    <tr class="text-center">
+                                        <td>{{slot.slot.location}}</td>
+                                        <td>{{slot.slot.phone_number}}</td>
+                                        <td>{{slot.slot.pin_number}}</td>
+                                        <td>{{slot.parking_date}}</td>
+                                        <td>{{slot.in_time}}</td>
+                                        <td>{{slot.out_time}}</td>
+                                        <td>{{slot.total_parking_time}}/Hours</td>
+                                        <td>{{slot.total_charges}}</td>
+                                        <td><span class="btn btn-warning ml-2">{{slot.status}}</span></td>
+                                        <td><a href="{% url 'feedback' slot.booking_id  %}"><button class="btn btn-info" type="button">Feedback</button></a></td>
+
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                                
+                            </table>
+                            </div>
+
+
+          
+                      
+                
+                    
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+            
+  
+</main><!-- End #main -->
+
+
+
+
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
+    
+    <div class="container">
+        <div class="row gy-4">
+            <div class="col-lg-5 col-md-12 footer-info">
+                <a href="/user/user-dashboard.html" class="logo d-flex align-items-center">
+                    <span>Codebook</span>
+                </a>
+                <p>We have provided trainings in many engineering colleges across india. All trainings conducted are as a freelancer from third-party vendors.</p>
+            </div>
+            
+            <div class="col-lg-2 col-6 footer-links">
+                <h4>Useful Links</h4>
+                <ul>
+                    <li><a href="/user/user-dashboard.html">Dashboard</a></li>
+                    <li><a href="/user/user-bookslot.html">Book Slot</a></li>
+                    <li><a href="/user/user-mybookings.html">My Bookings</a></li>
+                    <li><a href="/user/user-myprofile.html">My Profile</a></li>
+                </ul>
+            </div>
+            
+            <div class="col-lg-2 col-6 footer-links">
+                <h4>Our Services</h4>
+                <ul>
+                    <li><a href="#">Web Design</a></li>
+                    <li><a href="#">Web Development</a></li>
+                    <li><a href="#">Product Management</a></li>
+                    <li><a href="#">Marketing</a></li>
+                    <li><a href="#">Graphic Design</a></li>
+                </ul>
+            </div>
+            
+            <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
+                <h4>Contact Us</h4>
+                <p>
+                    Siris Rd, Near L.B Nagar Metro Station, Snehapuri Colony, <br>
+                    Hyderabad<br>
+                    Telangana<br>
+                    <strong>Phone:</strong> ex. +91 XXXX-XXXXX<br>
+                    <strong>Email:</strong> info@example.com<br>
+                </p>
+                
+            </div>
+            
+        </div>
+    </div>
+    
+    <div class="container mt-4">
+        <div class="copyright">
+            &copy; Copyright <strong><span>Codebook</span></strong>. All Rights Reserved
+        </div>
+        <div class="credits">
+            Designed by <a href="https://codebook.in/" target="_blank">Codebook</a>
+        </div>
+    </div>
+    
+</footer>
+<!-- End Footer -->
+
+<a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+<div id="preloader"></div>
+
+</script>  
+
+<!-- Vendor JS Files -->
+<script src="{% static 'user/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'user/vendor/aos/aos.js' %}"></script>
+<script src="{% static 'user/vendor/glightbox/js/glightbox.min.js' %}"></script>
+<script src="{% static 'user/vendor/purecounter/purecounter_vanilla.js' %}"></script>
+<script src="{% static 'user/vendor/swiper/swiper-bundle.min.js' %}"></script>
+<script src="{% static 'user/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+<script src="{% static 'user/vendor/php-email-form/validate.js' %}"></script>
+
+<!-- Template Main JS File -->
+<script src="{% static 'user/js/main.js' %}"></script>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+<script src="paging.js"></script>
+<script>
+    $('#table-demo').paging({
+        limit: 5,
+        rowDisplayStyle:'block',
+        activePage: 0,
+        rows: []
+    });
+
+</script>
+<!-- <script>
+    const wrapper = document.querySelector(".wrapper"),
+form = document.querySelector("form"),
+fileInp = form.querySelector("input"),
+infoText = form.querySelector("p"),
+closeBtn = document.querySelector(".close"),
+copyBtn = document.querySelector(".copy");
+function fetchRequest(file, formData) {
+    infoText.innerText = "Scanning QR Code...";
+    fetch("http://api.qrserver.com/v1/read-qr-code/", {
+        method: 'POST', body: formData
+    }).then(res => res.json()).then(result => {
+        result = result[0].symbol[0].data;
+        infoText.innerText = result ? "Upload QR Code to Scan" : "Couldn't scan QR Code";
+        if(!result) return;
+        document.querySelector("textarea").innerText = result;
+        form.querySelector("img").src = URL.createObjectURL(file);
+        wrapper.classList.add("active");
+    }).catch(() => {
+        infoText.innerText = "Couldn't scan QR Code";
+    });
+}
+fileInp.addEventListener("change", async e => {
+    let file = e.target.files[0];
+    if(!file) return;
+    let formData = new FormData();
+    formData.append('file', file);
+    fetchRequest(file, formData);
+});
+copyBtn.addEventListener("click", () => {
+    let text = document.querySelector("textarea").textContent;
+    navigator.clipboard.writeText(text);
+});
+form.addEventListener("click", () => fileInp.click());
+closeBtn.addEventListener("click", () => wrapper.classList.remove("active"));
+</script> -->
+</body>
+
+</html>

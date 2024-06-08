@@ -1,0 +1,598 @@
+s
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Confirm Booking </title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="" rel="icon">
+    <link href="{% static 'user/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Raleway:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+        rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="{% static 'user/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'user/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+    <link href="{% static 'user/vendor/aos/aos.css' %}" rel="stylesheet">
+    <link href="{% static 'user/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+    <link href="{% static 'user/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="{% static 'user/css/main.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+    <style>
+    
+        /*Card containing 2 cards*/
+        .card0 {
+            margin: 40px 12px 15px 12px;
+            border: 0;
+        }
+
+        /*Left Side card*/
+        .card1 {
+            margin: 0;
+            padding: 15px;
+            padding-top: 25px;
+            padding-bottom: 0px;
+            background: #263238;
+            height: 100%;
+        }
+
+        .bill-head {
+            color: #ffffff;
+            font-weight: bold;
+            margin-bottom: 0px;
+            margin-top: 0px;
+            font-size: 30px;
+        }
+
+        .line {
+            border-right: 1px grey solid;
+        }
+
+        .bill-date {
+            color: #BDBDBD;
+        }
+
+        .red-bg {
+            margin-top: 25px;
+            margin-left: 0px;
+            margin-right: 0px;
+            background-color: #F44336;
+            padding-left: 20px !important;
+            padding: 25px 10px 25px 15px;
+        }
+
+        #total {
+            margin-top: 0px;
+            padding-left: 7px;
+        }
+
+        #total-label {
+            margin-bottom: 0px;
+            color: #ffffff;
+            padding-left: 7px;
+        }
+
+        #heading1 {
+            color: #ffffff;
+            font-size: 20px;
+            padding-left: 10px;
+        }
+
+        #heading2 {
+            font-size: 27px;
+            color: #D50000;
+        }
+
+        /*For font-awesome icons in Placeholder*/
+        .placeicon {
+            font-family: fontawesome !important;
+        }
+
+        /*Right Side Card*/
+        .card2 {
+            padding: 25px;
+            margin: 0;
+            height: 100%;
+        }
+
+        .form-card .pay {
+            font-weight: bold;
+        }
+
+        .form-card input,
+        .form-card textarea {
+            padding: 10px 8px 10px 8px;
+            border: none;
+            border: 1px solid lightgrey;
+            border-radius: 0px;
+            margin-bottom: 25px;
+            margin-top: 2px;
+            width: 100%;
+            box-sizing: border-box;
+            font-family: montserrat;
+            color: #2C3E50;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        .form-card input:focus,
+        .form-card textarea:focus {
+            -moz-box-shadow: none !important;
+            -webkit-box-shadow: none !important;
+            box-shadow: none !important;
+            border: none;
+            font-weight: bold;
+            border: 1px solid gray;
+            outline-width: 0;
+        }
+
+        .btn-info {
+            color: #ffffff !important;
+        }
+
+        /*Imaged Radio Buttons*/
+        .radio-group {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .radio {
+            display: inline-block;
+            width: 204;
+            height: 64;
+            border-radius: 0;
+            background: lightblue;
+            box-sizing: border-box;
+            border: 2px solid lightgrey;
+            cursor: pointer;
+            margin: 8px 25px 8px 0px;
+        }
+
+        .radio:hover {
+            box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.2);
+        }
+
+        .radio.selected {
+            box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.4);
+        }
+
+        /*Fit image in bootstrap div*/
+        .fit-image {
+            width: 100%;
+            object-fit: cover;
+        }
+    </style>
+    <script>
+
+        $(document).ready(function () {
+
+            //For Card Number formatted input
+            var cardNum = document.getElementById('cr_no');
+            cardNum.onkeyup = function (e) {
+                if (this.value == this.lastValue) return;
+                var caretPosition = this.selectionStart;
+                var sanitizedValue = this.value.replace(/[^0-9]/gi, '');
+                var parts = [];
+
+                for (var i = 0, len = sanitizedValue.length; i < len; i += 4) {
+                    parts.push(sanitizedValue.substring(i, i + 4));
+                }
+
+                for (var i = caretPosition - 1; i >= 0; i--) {
+                    var c = this.value[i];
+                    if (c < '0' || c > '9') {
+                        caretPosition--;
+                    }
+                }
+                caretPosition += Math.floor(caretPosition / 4);
+
+                this.value = this.lastValue = parts.join('-');
+                this.selectionStart = this.selectionEnd = caretPosition;
+            }
+
+            //For Date formatted input
+            var expDate = document.getElementById('exp');
+            expDate.onkeyup = function (e) {
+                if (this.value == this.lastValue) return;
+                var caretPosition = this.selectionStart;
+                var sanitizedValue = this.value.replace(/[^0-9]/gi, '');
+                var parts = [];
+
+                for (var i = 0, len = sanitizedValue.length; i < len; i += 2) {
+                    parts.push(sanitizedValue.substring(i, i + 2));
+                }
+
+                for (var i = caretPosition - 1; i >= 0; i--) {
+                    var c = this.value[i];
+                    if (c < '0' || c > '9') {
+                        caretPosition--;
+                    }
+                }
+                caretPosition += Math.floor(caretPosition / 2);
+
+                this.value = this.lastValue = parts.join('/');
+                this.selectionStart = this.selectionEnd = caretPosition;
+            }
+
+            // Radio button
+            $('.radio-group .radio').click(function () {
+                $(this).parent().find('.radio').removeClass('selected');
+                $(this).addClass('selected');
+            });
+
+        })
+    </script>
+
+    <script>
+        function validation(){
+            var card_number = document.getElementById('cr_no');
+            var cvv = document.getElementById('cvcpwd');
+            var exp = document.getElementById('exp')
+
+            if (card_number.value.length == 0){
+                alert('Enter card number')
+                card_number.focus()
+                return false
+            };
+
+            if(cvv.value.length == 0){
+                alert('Enter cvv number')
+                cvv.focus()
+                return false
+            };
+
+            if(exp.value.length == 0){
+                alert("Enter Expiry date")
+                exp.focus()
+                return false
+            }
+        }
+    </script>
+
+
+
+</head>
+
+<body>
+
+    <!-- ======= Header ======= -->
+
+
+    <header id="header" class="header d-flex align-items-center">
+
+        <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+            <a href="user-dashboard.html" class="logo d-flex align-items-center">
+
+                <h1>Smart Parking<span>.</span></h1>
+            </a>
+            <nav id="navbar" class="navbar">
+                <ul>
+                    <li><a href="{% url 'user_dashboard' %}">Dashboard</a></li>
+                    <li><a href="{% url 'book_slot' %}">Book Slot</a></li>
+                    <li><a href="{% url 'bookings' %}" class="active">My Bookings</a></li>
+                    <li><a href="{% url 'booking_history' %}">Booking History</a></li>
+                    <li><a href="{% url 'user-profile' %}">My Profile</a></li>
+                    <a href="{% url 'user_logout' %}"><button class="btn btn-sm rounded-3 btn-primary fw-bold m-5">Sign
+                            Out</button></a>
+                </ul>
+            </nav><!-- .navbar -->
+
+            <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+            <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+
+        </div>
+    </header><!-- End Header -->
+    <!-- End Header -->
+
+
+    <main id="main">
+        <section id="services" class="services sections-bg mt-0 pt-0">
+            <div class="container " data-aos="fade-up">
+                <div ng-app="app">
+                    <div ng-controller="UploadController as vm">
+                        <div class="container">
+                            <div class="section-header">
+                                <h2>Payment Details of Parking Slot</h2>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+    </main><!-- End #main -->
+
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-11">
+                <div class="card card0 rounded-0">
+                    <div class="row">
+                        <div class="col-md-5 d-md-block d-none p-0 box">
+                            <div class="card rounded-0 border-0 card1" id="bill">
+                                <h3 id="heading1">Payment Summary</h3>
+                                <div class="row">
+                                    <div class="col-lg-7 col-8 mt-4 line pl-4">
+                                        <h2 class="bill-head">Parking Date</h2>
+                                        <small class="bill-date">{{booking_slot.parking_date}}</small>
+                                    </div>
+                                    <div class="col-lg-5 col-4 mt-4">
+                                        <h2 class="bill-head px-xl-5 px-lg-4">CAF</h2>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-7 col-8 mt-4 line pl-4">
+                                        <h2 class="bill-head">Parking Time</h2>
+                                        <small class="bill-date">{{booking_slot.in_time}}</small>
+                                    </div>
+                                    <div class="col-lg-5 col-4 mt-4">
+                                        <h2 class="bill-head px-xl-5 px-lg-4">JFK</h2>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-7 col-8 mt-4 line pl-4">
+                                        <h2 class="bill-head">Out Time</h2>
+                                        <small class="bill-date">{{booking_slot.out_time}}</small><br>
+
+                                    </div>
+                                    <div class="col-lg-5 col-4 mt-4">
+                                        <h2 class="bill-head px-xl-5 px-lg-4">LHR</h2>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-7 col-8 mt-4 line pl-4">
+                                        <h2 class="bill-head">Total Time</h2>
+                                        <small class="bill-date">{{booking_slot.total_parking_time}}
+                                            &nbsp;/Hours</small>
+                                    </div>
+                                    <div class="col-lg-5 col-4 mt-4">
+                                        <h2 class="bill-head px-xl-5 px-lg-4">JFK</h2>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 red-bg">
+                                        <p class="bill-date" id="total-label">Total Parking Charges</p>
+                                        <h2 class="bill-head" id="total">{{booking_slot.total_charges}} Rs</h2>
+                                        <small class="bill-date" id="total-label">Price includes all taxes</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-7 col-sm-12 p-0 box">
+                            <div class="card rounded-0 border-0 card2" id="paypage">
+                                <div class="form-card">
+                                    <form action="{% url 'pay' booking_slot.booking_id %}" method='post' onsubmit="return validation()">
+                                       {% csrf_token %}
+                                        <h2 id="heading2" class="text-danger">Payment Method</h2>
+                                        <div class="radio-group">
+                                            <div class='radio' data-value="credit"><img
+                                                    src="https://i.imgur.com/28akQFX.jpg" width="200px" height="60px">
+                                            </div>
+                                            <div class='radio' data-value="paypal"><img
+                                                    src="https://i.imgur.com/5QFsx7K.jpg" width="200px" height="60px">
+                                            </div>
+                                            <br>
+                                        </div>
+                                        <label class="pay">Name on Card</label>
+                                        <input type="text" name="holdername" value="{{booking_slot.user.full_name}}"
+                                            placeholder="John Smith" readonly>
+                                        <div class="row">
+                                            <div class="col-8 col-md-6">
+                                                <label class="pay">Card Number</label>
+                                                <input type="text" name="cardno" id="cr_no"
+                                                    placeholder="0000-0000-0000-0000" minlength="16" maxlength="16">
+                                            </div>
+                                            <div class="col-4 col-md-6">
+                                                <label class="pay">CVV</label>
+                                                <input type="tel" name="cvcpwd" id="cvcpwd"
+                                                    placeholder="&#9679;&#9679;&#9679;" class="placeicon" minlength="3"
+                                                    maxlength="3">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <label class="pay">Expiration Date</label>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <input type="text" name="exp" id="exp" placeholder="MM/YY" minlength="5"
+                                                    maxlength="5">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+
+                                            <div class="col-md-6">
+                                                
+                                                    <button type="submit" class="btn btn-info placeicon">MAKE A
+                                                        PAYMENT</button>
+                                                
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer" class="footer">
+
+        <div class="container">
+            <div class="row gy-4">
+                <div class="col-lg-5 col-md-12 footer-info">
+                    <a href="/user/user-dashboard.html" class="logo d-flex align-items-center">
+                        <span>Codebook</span>
+                    </a>
+                    <p>We have provided trainings in many engineering colleges across india. All trainings conducted are
+                        as a freelancer from third-party vendors.</p>
+                </div>
+
+                <div class="col-lg-2 col-6 footer-links">
+                    <h4>Useful Links</h4>
+                    <ul>
+                        <li><a href="/user/user-dashboard.html">Dashboard</a></li>
+                        <li><a href="/user/user-bookslot.html">Book Slot</a></li>
+                        <li><a href="/user/user-mybookings.html">My Bookings</a></li>
+                        <li><a href="/user/user-myprofile.html">My Profile</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-2 col-6 footer-links">
+                    <h4>Our Services</h4>
+                    <ul>
+                        <li><a href="#">Web Design</a></li>
+                        <li><a href="#">Web Development</a></li>
+                        <li><a href="#">Product Management</a></li>
+                        <li><a href="#">Marketing</a></li>
+                        <li><a href="#">Graphic Design</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
+                    <h4>Contact Us</h4>
+                    <p>
+                        Siris Rd, Near L.B Nagar Metro Station, Snehapuri Colony, <br>
+                        Hyderabad<br>
+                        Telangana<br>
+                        <strong>Phone:</strong> ex. +91 XXXX-XXXXX<br>
+                        <strong>Email:</strong> info@example.com<br>
+                    </p>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="container mt-4">
+            <div class="copyright">
+                &copy; Copyright <strong><span>Codebook</span></strong>. All Rights Reserved
+            </div>
+            <div class="credits">
+                Designed by <a href="https://codebook.in/" target="_blank">Codebook</a>
+            </div>
+        </div>
+
+    </footer>
+    <!-- End Footer -->
+
+    <a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i
+            class="bi bi-arrow-up-short"></i></a>
+
+    <div id="preloader"></div>
+
+    </script>
+    {% if messages %}
+    {% for message in messages %}
+    {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+    <script>swal({
+            title: "Warning!",
+            text: "{{message}}",
+            icon: "warning",
+            button: "OK",
+        });
+    </script>
+
+    {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+    <script>swal({
+            title: "Info :)",
+            text: "{{message}}",
+            icon: "info",
+            button: "OK",
+        });
+    </script>
+    {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+    <script>swal({
+            title: "Error :)",
+            text: "{{message}}",
+            icon: "error",
+            button: "OK",
+        });
+    </script>
+    {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+    <script>swal({
+            title: "Success :)",
+            text: "{{message}}",
+            icon: "success",
+            button: "OK",
+        });
+    </script>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+
+    <!-- Vendor JS Files -->
+    <script src="{% static 'user/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'user/vendor/aos/aos.js' %}"></script>
+    <script src="{% static 'user/vendor/glightbox/js/glightbox.min.js' %}"></script>
+    <script src="{% static 'user/vendor/purecounter/purecounter_vanilla.js' %}"></script>
+    <script src="{% static 'user/vendor/swiper/swiper-bundle.min.js' %}"></script>
+    <script src="{% static 'user/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+    <script src="{% static 'user/vendor/php-email-form/validate.js' %}"></script>
+
+    <!-- Template Main JS File -->
+    <script src="{% static 'user/js/main.js' %}"></script>
+    <!-- <script>
+    const wrapper = document.querySelector(".wrapper"),
+form = document.querySelector("form"),
+fileInp = form.querySelector("input"),
+infoText = form.querySelector("p"),
+closeBtn = document.querySelector(".close"),
+copyBtn = document.querySelector(".copy");
+function fetchRequest(file, formData) {
+    infoText.innerText = "Scanning QR Code...";
+    fetch("http://api.qrserver.com/v1/read-qr-code/", {
+        method: 'POST', body: formData
+    }).then(res => res.json()).then(result => {
+        result = result[0].symbol[0].data;
+        infoText.innerText = result ? "Upload QR Code to Scan" : "Couldn't scan QR Code";
+        if(!result) return;
+        document.querySelector("textarea").innerText = result;
+        form.querySelector("img").src = URL.createObjectURL(file);
+        wrapper.classList.add("active");
+    }).catch(() => {
+        infoText.innerText = "Couldn't scan QR Code";
+    });
+}
+fileInp.addEventListener("change", async e => {
+    let file = e.target.files[0];
+    if(!file) return;
+    let formData = new FormData();
+    formData.append('file', file);
+    fetchRequest(file, formData);
+});
+copyBtn.addEventListener("click", () => {
+    let text = document.querySelector("textarea").textContent;
+    navigator.clipboard.writeText(text);
+});
+form.addEventListener("click", () => fileInp.click());
+closeBtn.addEventListener("click", () => wrapper.classList.remove("active"));
+</script> -->
+</body>
+
+</html>
